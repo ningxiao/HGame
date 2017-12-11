@@ -1,4 +1,4 @@
-import BitmapData from '../display/BitmapData';
+import Bitmap from '../display/Bitmap';
 /**
  * User: ningxiao
  * Date: 17-12-10
@@ -24,7 +24,7 @@ const utils = {
             src = data[key];
         };
         img.onload = ()=> {
-            bitmaps[key] = new BitmapData(img);
+            bitmaps[key] = new Bitmap(img);
             count++;
             progress && progress.call(this, { "total": srcs.length, "loaded": count });
             if (count != srcs.length) {
