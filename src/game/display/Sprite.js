@@ -45,5 +45,24 @@ class Sprite extends DisplayObject {
             this._sortZindex();
         };
     }
+    /**
+     * 从显示列表中删除指定的 child DisplayObject 实例。
+     * @param {DisplayObject} child 
+     */
+    removeChild(child) {
+        if (child && child instanceof DisplayObject) {
+            for (let i = 0, len = this.childList.length; i < len; i++) {
+                if (this.childList[i] == child) {
+                    this.childList.splice(i, 1);
+                    this.child._release();
+                    this._numChildren--;
+                    break;
+                };
+            };
+            return child;
+        } else {
+            console.log("当前对象没有继承DisplayObject")
+        };
+    }
 }
 export default Sprite;

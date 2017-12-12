@@ -5,8 +5,14 @@
  */
 class Event {
     constructor(type) {
-        this.target;
-        this.type = type;
+        this._target = null;
+        this._type = type;
+    }
+    get target(){
+        return this._target;
+    }
+    get type(){
+        return this._type;
     }
     /**
      * 舞台帧频事件

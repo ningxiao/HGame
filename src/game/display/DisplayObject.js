@@ -67,6 +67,40 @@ class DisplayObject extends EventDispatcher {
         };
     };
     /**
+     * 当显示对象移除显示列表的时候清除原有注册事件
+     */
+    _release(){
+        super._release();
+    }
+    getObjectsUnderPoint(x, y) {
+        let z = -1,  j, k, obj,child,index;
+        for (let i = 0, len = this.childList.length; i < len; i++) {
+            child = this.getChildAt(i);
+            if (child && child.visible && child.hitTestPoint(x, y)) {
+                if (child.zIndex > z) {
+                    z = child.zIndex;
+                    index = i;
+                }
+            }
+        };
+        if (index != null) {
+            child = this.childList[index];
+            if (child.childList.length > 0) {
+                return child.getObjectsUnderPoint.call(child, x, y);
+            } else {
+                return  child;
+            };
+        }
+        return child;
+    }
+    getChildAt(index){
+        if (this._numChildren > 0 && index < this.childList.length) {
+            return this.childList[index];
+        } else {
+            return null;
+        };
+    }
+    /**
      * 返回一个矩形，该矩形根据 targetCoordinateSpace 参数定义的坐标系定义显示对象的边界
      * @param {DisplayObject} targetCoordinateSpace 
      * @return {Rectangle} 

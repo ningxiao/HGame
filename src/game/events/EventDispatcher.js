@@ -8,6 +8,8 @@ let functions = {};
 import Event from './Event';
 class EventDispatcher {
     constructor() {
+        this._evlist={
+        }
     };
     addEventListener(type, listener, useCapture, priority, useWeakReference) {
         count++;
@@ -17,6 +19,7 @@ class EventDispatcher {
         } else {
             this[type] = [count];
         };
+        this._evlist[type] = 1;
         return count;
     };
     dispatchEvent(event) {
@@ -25,13 +28,19 @@ class EventDispatcher {
             if (list = this[event.type]) {
                 list.forEach((key) => {
                     if (playfunc = functions[key]) {
-                        event.target = this;
+                        event._target = this;
                         playfunc.call(this, event);
                     };
                 });
             };
         }
     };
+    _release(){
+        for(let key in this._evlist){
+            this.removeEventListener(key);
+        };
+        this._evlist = {};
+    }
     hasEventListener(type) {
         return this[type] ? true : false;
     };
