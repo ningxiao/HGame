@@ -21,7 +21,7 @@ utile.queueBitmap([{"start":"/images/start.png"}],bitmaps,()=>{
         button = new Sprite();
         button.bitmap = bitmap;
         button.name = i;
-        button.y = i*50;
+        button.y = i*20;
         button.width = bitmap.width/2;
         button.height = bitmap.height/2;
         buts.push(button);
@@ -33,8 +33,13 @@ utile.queueBitmap([{"start":"/images/start.png"}],bitmaps,()=>{
     button.addEventListener(MouseEvent.CLICK,(ev)=>{
         console.log(ev);
     });
+    // button.addEventListener(MouseEvent.MOUSE_MOVE,(ev)=>{
+    //     console.log(ev.target.focus);
+    // });
     console.log(button.name);
+    button.buttonMode = true;
     document.querySelector("canvas").addEventListener("click",(ev)=>{
+        console.log(button.focus);
         //button.x = (ev.offsetX - button.globalX) - button.width/2;
         //button.y = (ev.offsetY - button.globalY) - button.height/2;
         //console.log(buts[3].x,ev.offsetX,buts[3]._global_x); 

@@ -12,6 +12,7 @@ class DisplayObject extends EventDispatcher {
         this._x = 0;//表示 DisplayObject 实例相对于父级 DisplayObjectContainer 本地坐标的 x 坐标。        
         this._y = 0;//表示 DisplayObject 实例相对于父级 DisplayObjectContainer 本地坐标的 y 坐标。
         this.z = 0;//使用webgl渲染引擎使用
+        this.focus = false;//是否被外部设置活动焦点
         this.mask = false;//是否使用遮罩对象DisplayObject
         this.width = 0;//宽度
         this.height = 0;//高度
@@ -25,6 +26,7 @@ class DisplayObject extends EventDispatcher {
         this.centerY = 0;//注册中心点Y
         this.parent = null;//父级对象
         this.rotation = 0;//旋转角度
+        this.buttonMode = false;//是否显示按钮模式
         this.alpha = 1;//透明度
         this.transform = null;//一个对象，具有与显示对象的矩阵、颜色转换和像素范围有关的属性。
         this.visible = true;//显示对象是否可以见
@@ -86,9 +88,7 @@ class DisplayObject extends EventDispatcher {
         if (index != null) {
             child = this.childList[index];
             if (child.childList.length > 0) {
-                return child.getObjectsUnderPoint.call(child, x, y);
-            } else {
-                return  child;
+                child = child.getObjectsUnderPoint.call(child, x, y);
             };
         }
         return child;
@@ -176,7 +176,12 @@ class DisplayObject extends EventDispatcher {
         };
     }
     enterFrame() {
-        
+        //let device = this._stage.device;
+        // if(this.focus && this.hitTestPoint(device.mouseX,device.mouseY)){
+        //     this.focus = true;
+        // }else{
+        //     this.focus = false;
+        // };
     };
     /**
      * 当每次帧频结束之前调用渲染引擎绘制,并且递归子元素进行渲染

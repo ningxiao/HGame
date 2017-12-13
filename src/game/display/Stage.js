@@ -46,6 +46,7 @@ class Stage extends DisplayObject{
     exitFrame(){
         this.enterFrame();
         this.engine.clearRect();
+        this.engine.drawMouse(this.getObjectsUnderPoint(this.device.mouseX, this.device.mouseY));
         for (let i = this.childList.length - 1; i >= 0; i--) {
             let child = this.childList[i];
             if (child && child.visible) {

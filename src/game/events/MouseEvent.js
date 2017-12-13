@@ -28,22 +28,22 @@ class MouseEvent extends Event {
         return 'click';
     }
     static get MOUSE_DOWN() {
-        return 'mouseDown';
+        return 'mousedown';
     }
     static get MOUSE_UP() {
         return 'mouseUp';
     }
     static get MOUSE_WHEEL() {
-        return 'mouseWheel';
+        return 'mousewheel';
     }
     static get MOUSE_MOVE() {
-        return 'MOUSE_MOVE';
+        return 'mousemove';
     }
     static get MOUSE_OUT() {
-        return 'mouseOut';
+        return 'mouseout';
     }
     static get MOUSE_OVER() {
-        return 'mouseOver';
+        return 'mouseover';
     }
 }
 export default MouseEvent;

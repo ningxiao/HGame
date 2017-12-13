@@ -31,6 +31,13 @@ class Engine{
             this.ctx.drawImage(bitmap.imgdata, bitmap.x, bitmap.y, bitmap.swidth, bitmap.sheight, displayobject.globalX, displayobject.globalY, displayobject.width, displayobject.height);
         };
     }
+    drawMouse(displayobject){
+        if(displayobject && displayobject.buttonMode){
+            this.canvas.style.cursor = "pointer";
+        }else{
+            this.canvas.style.cursor = "auto";
+        };
+    }
     draw(displayobject){
         if(displayobject){
             this.ctx.save(); //保存画笔状态
