@@ -1,5 +1,5 @@
+import Engine from '../engine';
 import Device from '../events/Device';
-import CanvasDraw from '../engine/CanvasDraw';
 import DisplayObject from '../display/DisplayObject';
 
 /**
@@ -14,7 +14,7 @@ class Stage extends DisplayObject{
         this._stage = this;
         this._numChildren = 0;//返回此对象的子项数目。
         this.device = new Device(this);
-        this.engine = new CanvasDraw(canvas);//绘制引擎可以切换webgl svg dom 等三类元素
+        this.engine = Engine(canvas);//绘制引擎可以切换webgl svg dom 等三类元素
         this.exitFrame();
     }
     /**

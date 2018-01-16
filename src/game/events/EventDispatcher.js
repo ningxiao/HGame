@@ -8,24 +8,22 @@ let functions = {};
 import Event from './Event';
 class EventDispatcher {
     constructor() {
-        this._evlist={
-        }
+        this._events = {};
     };
     addEventListener(type, listener, useCapture, priority, useWeakReference) {
         count++;
         functions[count] = listener;
-        if (this[type] && this[type].constructor === Array) {
-            this[type].push(count);
+        if (this._events[type] && this._events[type].constructor === Array) {
+            this._events[type].push(count);
         } else {
-            this[type] = [count];
+            this._events[type] = [count];
         };
-        this._evlist[type] = 1;
         return count;
     };
     dispatchEvent(event) {
-        if(event instanceof Event){
+        if (event instanceof Event) {
             let list, playfunc;
-            if (list = this[event.type]) {
+            if (list = this._events[event.type]) {
                 list.forEach((key) => {
                     if (playfunc = functions[key]) {
                         event._target = this;
@@ -35,23 +33,23 @@ class EventDispatcher {
             };
         }
     };
-    _release(){
-        for(let key in this._evlist){
+    _release() {
+        for (let key in this._events) {
             this.removeEventListener(key);
         };
-        this._evlist = {};
+        this._events = null;
     }
     hasEventListener(type) {
-        return this[type] ? true : false;
+        return this._events[type] ? true : false;
     };
     removeEventListener(type) {
         let list;
-        if (list = this[type]) {
+        if (list = this._events[type]) {
             list.forEach((key) => {
                 delete functions[key];
             });
         }
-        delete this[type];
+        delete this._events[type];
     };
     unlistenByKey(key) {
         if (key in functions) {

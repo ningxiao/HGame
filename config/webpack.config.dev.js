@@ -11,10 +11,11 @@
 const os = require('os');
 const path = require('path');
 const webpack = require('webpack');
-const pkgjson = require('./package.json');
+const helpers = require('./helpers');
+const pkgjson = require('../package.json');
 const lessplugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const publicpath = path.join(__dirname, "www");
+const publicPath = helpers.resolve('www');
 const utils = {
     analysis: (data) => {
         let output = data.output;
@@ -82,49 +83,54 @@ const webpackconfig = {
     entry: {
     },
     output: {
-        path: publicpath, //输出目录的配置，模板、样式、脚本、图片等资源的路径配置都相对于它
+        path: publicPath, //输出目录的配置，模板、样式、脚本、图片等资源的路径配置都相对于它
         filename: '[name]', //每个页面对应的主js的生成配置
         chunkFilename: "script/chunks/[id].chunk.js",
     },
     module: {
-        rules: [{
-            test: /\.js$/,
-            loader: 'babel-loader'
-        },
-        {
-            test: /\.less$/,
-            use: lessplugin.extract({
-                fallback: "style-loader",
-                use: ["css-loader", {
-                    loader:"postcss-loader",
-                    options: {  
-                        plugins:(loader)=>[ 
-                            require('autoprefixer')()
-                        ]
+        rules: [
+            {
+                test: /\.glsl$/,
+                loader: 'raw-loader'
+            }, 
+            {
+                test: /\.js$/,
+                loader: 'babel-loader'
+            },
+            {
+                test: /\.less$/,
+                use: lessplugin.extract({
+                    fallback: "style-loader",
+                    use: ["css-loader", {
+                        loader: "postcss-loader",
+                        options: {
+                            plugins: (loader) => [
+                                require('autoprefixer')()
+                            ]
+                        }
+                    }, "less-loader"]
+                })
+            }, {
+                test: /\.html$/,
+                use: [{
+                    loader: 'html-loader',
+                    options: {
+                        minimize: true,
+                        removeComments: false,
+                        collapseWhitespace: false
                     }
-                }, "less-loader"]
-            })
-        }, {
-            test: /\.html$/,
-            use: [{
-                loader: 'html-loader',
-                options: {
-                    minimize: true,
-                    removeComments: false,
-                    collapseWhitespace: false
-                }
+                }]
+            },
+            {
+                test: /\.ejs$/,
+                loader: 'ejs-loader'
             }]
-        },
-        {
-            test: /\.ejs$/,
-            loader: 'ejs-loader'
-        }]
     },
     devServer: {
         historyApiFallback: true,
-        contentBase: publicpath,
+        contentBase: publicPath,
         port: config.port,
-        host: '0.0.0.0',
+        host: '127.0.0.1',
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(), //热加载插件
@@ -132,17 +138,17 @@ const webpackconfig = {
             filename: "[name]"
         }),
         new webpack.DefinePlugin({
-                __VERSION__: JSON.stringify(pkgjson.version),
-                __DEV__: JSON.stringify((process.env.NODE_ENV || 'production')),
-            }
+            __VERSION__: JSON.stringify(pkgjson.version),
+            __DEV__: JSON.stringify((process.env.NODE_ENV || 'production')),
+        }
         ),
         new HtmlWebpackPlugin({
             inject: false,
             css: `<link rel="stylesheet" type="text/css" href="/css/index.min.css">`,
             js: `<script type="text/javascript" src="/script/index.min.js"></script>`,
             title: 'Canvas分享',
-            filename: `${publicpath}/index.html`,
-            template: path.resolve(__dirname, 'src/app.ejs')
+            filename: `${publicPath}/index.html`,
+            template: helpers.resolve('src/app.ejs')
         }),
         new webpack.BannerPlugin(`
 -------------------------------------------------------------

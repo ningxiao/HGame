@@ -3,7 +3,7 @@
  * Date: 17-12-10
  * Engine 底层执行各种数据与图形渲染
  */
-class Engine{
+class WxEngine{
     constructor(canvas){
         this.canvas = canvas;
         this.width = this.canvas.offsetWidth;
@@ -46,4 +46,4 @@ class Engine{
         }
     }
 }
-export default Engine;
+export default WxEngine;
