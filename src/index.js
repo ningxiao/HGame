@@ -35,13 +35,13 @@ utile.queueBitmap([{"start":"/images/start.png"}],bitmaps,()=>{
     button.addEventListener(MouseEvent.CLICK,(ev)=>{
         console.log(`第${ev.target.name}个被点击`);
     });
-    // button.addEventListener(MouseEvent.MOUSE_MOVE,(ev)=>{
-    //     console.log(`第${ev.target.name}个被获取焦点`);
-    // })
-    document.querySelector("canvas").addEventListener("click",(ev)=>{
-        //console.log(button.focus);
-        //button.x = (ev.offsetX - button.globalX) - button.width/2;
-        //button.y = (ev.offsetY - button.globalY) - button.height/2;
-        //console.log(buts[3].x,ev.offsetX,buts[3]._global_x); 
-    });
+    button.addEventListener(MouseEvent.MOUSE_MOVE,(ev)=>{
+        console.log(`第${ev.target.name}个被获取焦点`);
+    })
+    // document.querySelector("canvas").addEventListener("click",(ev)=>{
+    //     console.log(button.focus);
+    //     button.x = (ev.offsetX - button.globalX) - button.width/2;
+    //     button.y = (ev.offsetY - button.globalY) - button.height/2;
+    //     console.log(buts[3].x,ev.offsetX,buts[3]._global_x); 
+    // });
 });
