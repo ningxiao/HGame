@@ -5,9 +5,23 @@ import Bitmap from './game/display/Bitmap';
 import MovieClip from './game/display/MovieClip';
 import MouseEvent from './game/events/MouseEvent';
 const engine = new URLSearchParams(window.location.search).get('engine');
-const isEngine = engine === 'wx';
-const canvas = document.createElement(isEngine ? 'canvas' : 'div');
-document.title = isEngine ? 'canvas渲染' : 'html渲染';
+const isEngine = engine === 'h5';
+const canvas = document.createElement(isEngine ? 'div' : 'canvas');
+document.title = ((engine) => {
+    switch (engine) {
+        case 'wx':
+            return 'canvas渲染';
+            break;
+        case 'h5':
+            return 'html渲染';
+            break;
+        case 'gl':
+            return 'webgl渲染'
+            break;
+        default:
+            break;
+    }
+})(engine);
 canvas.classList.add('stage');
 document.body.appendChild(canvas);
 const StageUi = new Stage(canvas, engine);
