@@ -1,8 +1,7 @@
-import config from '../config';
 import H5Engine from './h5/H5Engine';
 import WxEngine from './wx/WxEngine';
-export default (canvas) => {
-    switch (config.engine) {
+export default (canvas, engine) => {
+    switch (engine) {
         case 'wx':
             return new WxEngine(canvas);
             break;

@@ -1,62 +1,63 @@
 import Point from '../geom/Point';
 import Rectangle from '../geom/Rectangle';
+import utils from '../utils/index';
 import EventDispatcher from '../events/EventDispatcher';
 /**
  * User: ningxiao
- * Date: 17-12-10
  * DisplayObject显示对象的基类。
  */
 class DisplayObject extends EventDispatcher {
     constructor() {
         super();
-        this._x = 0;//表示 DisplayObject 实例相对于父级 DisplayObjectContainer 本地坐标的 x 坐标。        
-        this._y = 0;//表示 DisplayObject 实例相对于父级 DisplayObjectContainer 本地坐标的 y 坐标。
-        this.z = 0;//使用webgl渲染引擎使用
-        this.focus = false;//是否被外部设置活动焦点
-        this.mask = false;//是否使用遮罩对象DisplayObject
-        this.width = 0;//宽度
-        this.height = 0;//高度
-        this.bitmap = null;//
+        this._x = 0; //表示 DisplayObject 实例相对于父级 DisplayObjectContainer 本地坐标的 x 坐标。        
+        this._y = 0; //表示 DisplayObject 实例相对于父级 DisplayObjectContainer 本地坐标的 y 坐标。
+        this.z = 0; //使用webgl渲染引擎使用
+        this.uid = utils.guid();
+        this.focus = false; //是否被外部设置活动焦点
+        this.mask = false; //是否使用遮罩对象DisplayObject
+        this.width = 0; //宽度
+        this.height = 0; //高度
+        this.bitmap = null; //
         this.mouseX = 0;
         this.mouseY = 0;
-        this.zMax = 0;//当前最大层
-        this.zIndex = 0;//当前对象层级关系
-        this.childList = [];//对象包含子节点元素集合
-        this.centerX = 0;//注册中心点X
-        this.centerY = 0;//注册中心点Y
-        this.parent = null;//父级对象
-        this.rotation = 0;//旋转角度
-        this.buttonMode = false;//是否显示按钮模式
-        this.alpha = 1;//透明度
-        this.transform = null;//一个对象，具有与显示对象的矩阵、颜色转换和像素范围有关的属性。
-        this.visible = true;//显示对象是否可以见
+        this.zMax = 0; //当前最大层
+        this.zIndex = 0; //当前对象层级关系
+        this.childList = []; //对象包含子节点元素集合
+        this.centerX = 0; //注册中心点X
+        this.centerY = 0; //注册中心点Y
+        this.parent = null; //父级对象
+        this.rotation = 0; //旋转角度
+        this.buttonMode = false; //是否显示按钮模式
+        this.alpha = 1; //透明度
+        this.transform = null; //一个对象，具有与显示对象的矩阵、颜色转换和像素范围有关的属性。
+        this.visible = true; //显示对象是否可以见
         this.cacheAsBitmap = false; //是否使用BitmapData缓存数据 
-        this._stage = null;//舞台渲染对象
-        this._global_x = 0;//相对与舞台的坐标系 x轴
-        this._global_y = 0;//相对与舞台的坐标系 y轴
+        this._stage = null; //舞台渲染对象
+        this._global_x = 0; //相对与舞台的坐标系 x轴
+        this._global_y = 0; //相对与舞台的坐标系 y轴
         this._global_rect = new Rectangle();
     }
-    get globalX(){
+    get globalX() {
         return this._global_x;
     }
-    get globalY(){
+    get globalY() {
         return this._global_y;
     }
-    get stage(){
+    get stage() {
         return this._stage;
     }
-    get x(){
+    get x() {
         return this._x;
     }
-    set x(x){
-        this._x +=x;
+    set x(x) {
+        this._x = x;
         this.activation();
     }
-    get y(){
+    get y() {
         return this._y;
     }
-    set y(y){
-        this._y +=y;
+    set y(y) {
+        this._y = y;
         this.activation();
     }
     _sortZindex() {
@@ -71,11 +72,11 @@ class DisplayObject extends EventDispatcher {
     /**
      * 当显示对象移除显示列表的时候清除原有注册事件
      */
-    _release(){
+    _release() {
         super._release();
     }
     getObjectsUnderPoint(x, y) {
-        let z = -1,  j, k, obj,child,index;
+        let z = -1, j, k, obj, child, index;
         for (let i = 0, len = this.childList.length; i < len; i++) {
             child = this.getChildAt(i);
             if (child && child.visible && child.hitTestPoint(x, y)) {
@@ -93,7 +94,7 @@ class DisplayObject extends EventDispatcher {
         }
         return child;
     }
-    getChildAt(index){
+    getChildAt(index) {
         if (this._numChildren > 0 && index < this.childList.length) {
             return this.childList[index];
         } else {
@@ -125,7 +126,7 @@ class DisplayObject extends EventDispatcher {
      * @param {Point} point 
      * @return {Point}
      */
-    localToGlobal(point){
+    localToGlobal(point) {
         return new Point(point.x + this._global_x, point.y + this._global_y);
     }
     /**
@@ -134,11 +135,15 @@ class DisplayObject extends EventDispatcher {
      * @return {Boolean} 
      */
     hitTestObject(obj) {
-        if(obj instanceof DisplayObject){
-            let L1 = this._global_x, R1 = L1 + this.width;
-            let T1 = this._global_y, B1 = T1 + this.height;
-            let L2 = obj._global_x, R2 = L2 + obj.width;
-            let T2 = obj._global_y, B2 = T2 + obj.height;
+        if (obj instanceof DisplayObject) {
+            let L1 = this._global_x,
+                R1 = L1 + this.width;
+            let T1 = this._global_y,
+                B1 = T1 + this.height;
+            let L2 = obj._global_x,
+                R2 = L2 + obj.width;
+            let T2 = obj._global_y,
+                B2 = T2 + obj.height;
             if (!(R1 < L2 || L1 > R2 || B1 < T2 || T1 > B2)) {
                 return true;
             };
@@ -152,7 +157,7 @@ class DisplayObject extends EventDispatcher {
      * @param {Number} y 
      */
     hitTestPoint(x, y) {
-        return this._global_rect.contains(x,y);
+        return this._global_rect.contains(x, y);
     }
     /**
      * 被激活存在两种情况
@@ -160,13 +165,13 @@ class DisplayObject extends EventDispatcher {
      * 2、父级对象未被挂载到舞台对象stage而给它添加子元素
      * 备注:只有被挂载到舞台的时候才可以渲染并且从新计算全局坐标系
      */
-    activation(){
+    activation() {
         let child;
-        if(this.parent){//只要向上寻找是否存在父级元素
-            this._stage = this.parent.stage;//舞台渲染对象
-            this._global_x = this.parent._global_x + this.x;//相对与舞台的坐标系 x轴
-            this._global_y = this.parent._global_y + this.y;//相对与舞台的坐标系 y轴
-            this._global_rect.setTo(this._global_x,this._global_y,this.width,this.height);
+        if (this.parent) { //只要向上寻找是否存在父级元素
+            this._stage = this.parent.stage; //舞台渲染对象
+            this._global_x = this.parent._global_x + this.x; //相对与舞台的坐标系 x轴
+            this._global_y = this.parent._global_y + this.y; //相对与舞台的坐标系 y轴
+            this._global_rect.setTo(this._global_x, this._global_y, this.width, this.height);
             for (let i = this.childList.length - 1; i >= 0; i--) {
                 child = this.childList[i];
                 if (child && child.visible) {
@@ -187,7 +192,7 @@ class DisplayObject extends EventDispatcher {
      * 当每次帧频结束之前调用渲染引擎绘制,并且递归子元素进行渲染
      * @param {engine} engine 
      */
-    exitFrame(engine){
+    exitFrame(engine) {
         let child;
         this.enterFrame();
         engine.draw(this);

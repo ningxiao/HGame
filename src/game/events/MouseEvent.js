@@ -2,7 +2,6 @@ import Event from './Event';
 /**
  * 每次发生鼠标事件时，都会将 MouseEvent 对象调度到事件流中
  * User: ningxiao
- * Date: 17-12-12
  */
 class MouseEvent extends Event {
     constructor(type, stageX = 0, stageY = 0) {

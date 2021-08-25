@@ -1,6 +1,5 @@
 /**
  * User: ningxiao
- * Date: 17-12-10
  * 模拟的 DOM 事件模型体系，以实现虚拟对象事件响应体系
  */
 class Event {
@@ -8,10 +7,10 @@ class Event {
         this._target = null;
         this._type = type;
     }
-    get target(){
+    get target() {
         return this._target;
     }
-    get type(){
+    get type() {
         return this._type;
     }
     /**

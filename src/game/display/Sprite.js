@@ -2,18 +2,17 @@ import Graphics from './Graphics';
 import DisplayObject from './DisplayObject';
 /**
  * User: ningxiao
- * Date: 17-12-10
  * Sprite 对象与MovieClip动画类似，但没有时间轴。Sprite 是不需要时间轴的对象的相应基类
  */
 class Sprite extends DisplayObject {
     constructor() {
         super();
-        this.stopDrag = false;//设置是否允许拖动
-        this.useHandCursor = false;//布尔值，指示当鼠标滑过其 buttonMode 属性设置为 true 的 sprite 时是否显示手指形（手形光标）。
-        this.buttonMode = false;//指定此 sprite 的按钮模式
-        this.mouseEnabled = true;//指定此对象是否接收鼠标或其他用户输入、消息。
-        this._numChildren = 0;//返回此对象的子项数目。
-        this._graphics = new Graphics();//指定属于此 sprite 的 Graphics 对象，在此 sprite 中可执行矢量绘图命令
+        this.stopDrag = false; //设置是否允许拖动
+        this.useHandCursor = false; //布尔值，指示当鼠标滑过其 buttonMode 属性设置为 true 的 sprite 时是否显示手指形（手形光标）。
+        this.buttonMode = false; //指定此 sprite 的按钮模式
+        this.mouseEnabled = true; //指定此对象是否接收鼠标或其他用户输入、消息。
+        this._numChildren = 0; //返回此对象的子项数目。
+        this._graphics = new Graphics(); //指定属于此 sprite 的 Graphics 对象，在此 sprite 中可执行矢量绘图命令
     }
     /**
      * 返回对象绘制矢量
@@ -38,7 +37,7 @@ class Sprite extends DisplayObject {
         if (child instanceof DisplayObject) {
             child.parent = this;
             child.zIndex = this.zMax;
-            child.activation();//激活挂载
+            child.activation(); //激活挂载
             this.zMax++;
             this._numChildren++;
             this.childList.push(child);

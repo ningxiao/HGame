@@ -1,48 +1,59 @@
 /**
  * User: ningxiao
- * Date: 17-12-10
  * Engine 底层执行各种数据与图形渲染
  */
-class H5Engine{
-    constructor(canvas){
+class H5Engine {
+    constructor(canvas) {
         this.canvas = canvas;
+        this.domMap = new Map();
         this.width = this.canvas.offsetWidth;
         this.height = this.canvas.offsetHeight;
-        this.ctx = this.canvas.getContext("2d");
-        this.ratio = this._getratio;
-        this.ctx.scale(this.ratio, this.ratio);
     }
-    get _getratio() {
-        let dpr = window.devicePixelRatio || 1;
-        let bsr = this.ctx.webkitBackingStorePixelRatio || this.ctx.mozBackingStorePixelRatio || this.ctx.msBackingStorePixelRatio || this.ctx.oBackingStorePixelRatio || this.ctx.backingStorePixelRatio || 1;
-        let ratio = dpr / bsr;
-        this.canvas.width = this.width * ratio;
-        this.canvas.height = this.height * ratio;
-        this.canvas.style.width = this.width + 'px';
-        this.canvas.style.height = this.height + 'px';
-        return ratio;
+    clearRect(x = 0, y = 0, width = this.width, height = this.height) {
+        for (const dom of this.domMap) { // 遍历Map
+            if (dom[0].visible) {
+                dom[1].style.display = 'block';
+            } else {
+                dom[1].style.display = 'none';
+            }
+        }
     }
-    clearRect(x =0,y =0,width = this.width,height= this.height){
-        this.ctx.clearRect(x,y, width, height);
+    drawImage(displayobject) {
+        const dom = this.domMap.get(displayobject);
+        const x = displayobject.globalX - displayobject.parent.globalX;
+        const y = displayobject.globalY - displayobject.parent.globalY;
+        dom.style.transform = `translate(${x}px, ${y}px)`;
+        if(displayobject.frames){
+            let bitmap;
+            if (bitmap = displayobject.bitmap) {
+                dom.style.backgroundPosition = `${bitmap.x}px ${-bitmap.y}px`;
+                dom.style.backgroundSize  = `auto`;
+            };
+        }
     }
-    drawImage(displayobject){
-        let x,y,bitmap;
-        if(bitmap = displayobject.bitmap){
-            this.ctx.drawImage(bitmap.imgdata, bitmap.x, bitmap.y, bitmap.swidth, bitmap.sheight, displayobject.globalX, displayobject.globalY, displayobject.width, displayobject.height);
-        };
-    }
-    drawMouse(displayobject){
-        if(displayobject && displayobject.buttonMode){
+    drawMouse(displayobject) {
+        if (displayobject && displayobject.buttonMode) {
             this.canvas.style.cursor = "pointer";
-        }else{
+        } else {
             this.canvas.style.cursor = "auto";
         };
     }
-    draw(displayobject){
-        if(displayobject){
-            this.ctx.save(); //保存画笔状态
+    draw(displayobject) {
+        if (displayobject) {
+            if (!this.domMap.has(displayobject)) {
+                let bitmap, cssText;
+                const dom = document.createElement('div');
+                this.domMap.set(displayobject, dom);
+                dom.id = displayobject.uid;
+                dom.classList.add('sprite');
+                cssText = `transform: translate(${displayobject.globalX}px, ${displayobject.globalY}px);width: ${displayobject.width}px;height: ${displayobject.height}px;`;
+                if (bitmap = displayobject.bitmap) {
+                    cssText += `background-image: url('${bitmap.imgdata.src}');`;
+                };
+                dom.style.cssText = cssText;
+                (this.domMap.get(displayobject.parent) || this.canvas).appendChild(dom);
+            }
             this.drawImage(displayobject);
-            this.ctx.restore(); //绘制结束以后，恢复画笔状态
         }
     }
 }

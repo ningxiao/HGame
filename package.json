@@ -4,7 +4,7 @@
   "author": "ningxiao@meitu.com",
   "description": "canvas分享",
   "scripts": {
-    "build": "export NODE_ENV=production && ./node_modules/.bin/webpack -p --config ./config/webpack.config.js",
+    "build": "export NODE_ENV=production && ./node_modules/.bin/webpack -p --config ./config/webpack.config.prd.js",
     "dev": "export NODE_ENV=production && ./node_modules/.bin/webpack-dev-server --config ./config/webpack.config.dev.js"
   },
   "devDependencies": {

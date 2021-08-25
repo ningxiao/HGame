@@ -4,17 +4,16 @@ import DisplayObject from '../display/DisplayObject';
 
 /**
  * User: ningxiao
- * Date: 17-12-10
  * Stage 类代表主绘图区
  */
-class Stage extends DisplayObject{
-    constructor(canvas){
+class Stage extends DisplayObject {
+    constructor(canvas, engine) {
         super();
         this._canvas = canvas;
         this._stage = this;
-        this._numChildren = 0;//返回此对象的子项数目。
+        this._numChildren = 0; //返回此对象的子项数目。
         this.device = new Device(this);
-        this.engine = Engine(canvas);//绘制引擎可以切换webgl svg dom 等三类元素
+        this.engine = Engine(canvas, engine); //绘制引擎可以切换webgl svg dom 等三类元素
         this.exitFrame();
     }
     /**
@@ -33,17 +32,17 @@ class Stage extends DisplayObject{
         if (child instanceof DisplayObject) {
             child.parent = this;
             child.zIndex = this.zMax;
-            child.activation();//激活挂载
+            child.activation(); //激活挂载
             this.zMax++;
             this._numChildren++;
             this.childList.push(child);
             this._sortZindex();
         };
     }
-    enterFrame(){
-        
+    enterFrame() {
+
     }
-    exitFrame(){
+    exitFrame() {
         this.enterFrame();
         this.engine.clearRect();
         this.engine.drawMouse(this.getObjectsUnderPoint(this.device.mouseX, this.device.mouseY));

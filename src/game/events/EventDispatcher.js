@@ -1,6 +1,5 @@
 /** 
  * User: ningxiao
- * Date: 17-12-10
  * 事件控制基类
  */
 let count = 0;

@@ -1,7 +1,6 @@
 import utils from '../utils';
 /**
  * User: ningxiao
- * Date: 17-12-10
  * Point 对象表示二维坐标系统中的某个位置，其中 x 表示水平轴，y 表示垂直轴。
  */
 class Point {
@@ -52,18 +51,18 @@ class Point {
      * @param {Number} xa 
      * @param {Number} ya 
      */
-    setTo(xa,ya){
+    setTo(xa, ya) {
         this.x = xa;
         this.y = ya;
         this.length = utils.pointLength(this.x, this.y);
-    }	
+    }
     /**
      * 按指定量偏移 Point 对象。
      * @param {Number} dx 
      * @param {Number} dy 
      */
-    offset(dx, dy){
-        this.setTo(this.x + dx ,this.y +dy);
+    offset(dx, dy) {
+        this.setTo(this.x + dx, this.y + dy);
     }
 }
 export default Point;
