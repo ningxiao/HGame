@@ -64,14 +64,14 @@ const utils = {
 const config = {
     js: {
         suffix: ".min.js",
-        output: "script/",
+        output: "./script/",
         datasource: {
             index: "./src/index.js"
         }
     },
     css: {
         suffix: ".min.css",
-        output: "css/",
+        output: "./css/",
         datasource: {
             "index": "./src/less/index.less"
         }

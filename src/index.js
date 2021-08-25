@@ -14,13 +14,13 @@ const StageUi = new Stage(canvas, engine);
 const bitmaps = {};
 utile.queueBitmap([{
     name: 'start',
-    url: "/images/start.png",
+    url: "./images/start.png",
 }, {
     name: 'monster',
-    url: "/images/monster.png",
+    url: "./images/monster.png",
 }, {
     name: 'coinAni',
-    url: "/images/coinAni.png",
+    url: "./images/coinAni.png",
 }], bitmaps, () => {
     let button, bitmap = bitmaps.start;
     let box = new Sprite();
